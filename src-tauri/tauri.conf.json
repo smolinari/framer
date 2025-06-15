@@ -10,31 +10,16 @@
     "windows": [
       {
         "label": "main",
-        "title": "My Framer app",
-        "width": 800,
-        "height": 600, 
-        "resizable": true,
-        "fullscreen": false,
-        "alwaysOnTop": true,
+        "title": "Framer", 
         "url": "index.html",
-        "visible": false,
-        "transparent": true,
-        "decorations": false 
-      },
-      {
-        "label": "control",
-        "title": "Framer Controls",
-        "url": "control.html",
-        "width": 350,
-        "height": 50,
-        "x": 2385,
-        "y": 0,
-        "resizable": false,
-        "decorations": true,
-        "alwaysOnTop": true,
-        "skipTaskbar": true,
+        "maximized": true,   
+        "transparent": true, 
+        "decorations": false,
+        "alwaysOnTop": true, 
+        "visible": true,     
+        "resizable": false,  
         "fullscreen": false,
-        "visible": true
+        "skipTaskbar": true  
       }
     ],
     "security": {

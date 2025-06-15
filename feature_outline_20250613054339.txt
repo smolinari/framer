@@ -11,6 +11,7 @@ App Features:
 Suggested Future Enhancements:
 
 * **Customizable Frame Appearance:** Allow users to change the frame's color, border style (solid, dashed), thickness, and opacity.
+* **User-Selectable Colors with Local Storage:** Provide a UI (e.g., pulldown or color picker) for users to choose their own colors for elements like the frame and handles. Store these choices locally so they persist across application restarts.
 * **Aspect Ratio Display/Lock:** Display the current aspect ratio of the frame and offer an option to lock it to common ratios (e.g., 16:9, 4:3).
 * **Dimension Display:** Show the exact pixel dimensions (width x height) and screen coordinates (X, Y) of the frame.
 * **Multiple Frames/Presets:** Enable the creation and management of multiple independent frames, or save/load frame position/size presets.

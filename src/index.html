@@ -6,7 +6,33 @@
   <link rel="stylesheet" href="style.css">
   <title>Framer</title>
 </head>
+<style>
+  /* Styles for the control button area */
+  .controls-container {
+    position: fixed; /* Keep it fixed at the top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Center button horizontally */
+    padding-top: 10px; /* Space from the top edge */
+    z-index: 10000; /* Ensure it's above the framer-main div */
+    pointer-events: none; /* Container itself doesn't catch clicks */
+  }
+  .controls-container button {
+    padding: 8px 15px;
+    font-size: 0.9em;
+    cursor: pointer;
+    pointer-events: all; /* Button should catch clicks */
+  }
+</style>
 <body>
+  <div class="controls-container">
+    <button id="toggle-frame-btn">Frame OFF</button>
+  </div>
+  <div id="dimension-display" style="display: none;">
+    <!-- Dimensions will be populated here by JavaScript -->
+  </div>
   <div id="framer-main">
     <div class="resize-handle" id="handle-nw"></div>
     <div class="resize-handle" id="handle-n"></div>
