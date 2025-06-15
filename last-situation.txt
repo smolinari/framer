@@ -1,0 +1,29 @@
+Project: Screen Framer Tauri App
+
+Current Goal: Test the "always-on-top" window feature in a production build on Windows to see if it behaves differently than in the development environment where it was sometimes being covered by other windows.
+
+Build Process for Windows (from WSL):
+1.  Successfully added the `x86_64-pc-windows-gnu` Rust target.
+2.  Successfully installed `mingw-w64` in WSL.
+3.  Modified `tauri.conf.json` to set `bundle.targets = []` to avoid NSIS installer errors during cross-compilation and get just the `.exe`.
+4.  Built the app using `cargo tauri build --target x86_64-pc-windows-gnu`.
+5.  The `.exe` is located at `/home/scott/tmp-dev/Framer/src-tauri/target/x86_64-pc-windows-gnu/release/app.exe`.
+
+Running the .exe on Windows:
+1.  Encountered Windows Defender SmartScreen: Bypassed using "More info" -> "Run anyway".
+2.  Encountered "WebView2.dll not found" error.
+3.  Attempted Fix: Downloaded and installed the WebView2 Evergreen Bootstrapper from the official Microsoft site.
+4.  Restarted Windows machine: Still received the "WebView2.dll not found" error.
+5.  Checked "Apps & features" to uninstall/reinstall bootstrapper: "Microsoft Edge WebView2 Runtime" was not listed, indicating the initial install likely failed.
+6.  Attempted Fix 2: Re-ran the WebView2 Evergreen Bootstrapper installer as administrator. The installer ran for a period and then closed without any success confirmation or error message. "Microsoft Edge WebView2 Runtime" still not listed in "Apps & features".
+7.  Current Issue: "WebView2.dll not found" error persists. The system-wide WebView2 runtime installation seems problematic.
+8.  Attempted Fix 3: Tried installing the WebView2 Runtime (not the bootstrapper). Installer reported a newer version of Edge was already installed.
+9.  Uninstalled Microsoft Edge. The runtime installer still reported a newer version of Edge was present.
+10. Advised to reboot the Windows machine to ensure the Edge uninstallation is fully recognized by the system.
+
+Next Step: Configure Tauri to bundle a fixed version of the WebView2 runtime directly with the application.
+    a.  Download the WebView2 Fixed Version Runtime CAB file (x64).
+    b.  Place the CAB file in `src-tauri/webview2-runtime/`.
+    c.  Modify `tauri.conf.json` to set `bundle.windows.webviewInstallMode.type` to `"fixedRuntime"` and `bundle.windows.webviewInstallMode.path` to the CAB file location.
+    d.  Rebuild the application with `cargo tauri build --target x86_64-pc-windows-gnu`.
+    e.  Copy the entire contents of the `release` directory (including the app.exe, WebView2Loader.dll, and the WebView2 runtime folder) to Windows and test.

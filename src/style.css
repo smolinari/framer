@@ -1,0 +1,63 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100vw; /* Use viewport units for full screen coverage */
+  height: 100vh;
+  overflow: hidden; /* Important for a frameless window */
+  background-color: transparent;
+}
+
+#framer-main {
+  width: 300px; /* Initial placeholder size */
+  height: 200px; /* Initial placeholder size */
+  border: 3px dashed #FFF; /* Adjusted for better visibility on various backgrounds */
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  background-color: transparent; /* Crucial for click-through inside */
+  box-sizing: border-box; /* Ensures border and padding don't add to width/height */
+}
+
+.resize-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: rgba(0, 100, 255, 0.7); /* A less aggressive color */
+  /* z-index can be useful if content inside #framer-main might overlap */
+  /* z-index: 10; */
+}
+
+/* Corner handles */
+#handle-nw {
+  top: -5px; /* Half of handle height to center on border */
+  left: -5px; /* Half of handle width to center on border */
+  cursor: nwse-resize;
+}
+#handle-ne {
+  top: -5px;
+  right: -5px;
+  cursor: nesw-resize;
+}
+#handle-sw {
+  bottom: -5px;
+  left: -5px;
+  cursor: nesw-resize;
+}
+#handle-se {
+  bottom: -5px;
+  right: -5px;
+  cursor: nwse-resize;
+}
+
+/* Side handles */
+#handle-n { top: -5px; left: 50%; transform: translateX(-50%); cursor: ns-resize; }
+#handle-s { bottom: -5px; left: 50%; transform: translateX(-50%); cursor: ns-resize; }
+#handle-w { top: 50%; left: -5px; transform: translateY(-50%); cursor: ew-resize; }
+#handle-e { top: 50%; right: -5px; transform: translateY(-50%); cursor: ew-resize; }
+
+/* Optional: A slightly more subtle handle appearance */
+/*
+.resize-handle {
+  border: 1px solid #fff;
+}
+*/

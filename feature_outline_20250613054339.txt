@@ -1,0 +1,21 @@
+```
+App Features:
+
+* **Click-and-Drag Frame Creation:** Users can click and drag on the screen to define the initial size and position of a capture frame.
+* **Always-On-Top Persistence:** Once created, the frame remains visible on the screen and stays above all other application windows.
+* **Resizable Frame:** The frame's dimensions can be adjusted by dragging its sides and corners.
+* **Proportional Scaling:** Holding the 'Ctrl' key during resizing will proportionally scale the entire frame, maintaining its aspect ratio.
+* **Draggable Frame:** The entire frame can be moved to a new position on the screen by clicking and dragging its interior.
+* **Cross-Platform Compatibility:** The application will run seamlessly on Windows, macOS, and Linux operating systems.
+
+Suggested Future Enhancements:
+
+* **Customizable Frame Appearance:** Allow users to change the frame's color, border style (solid, dashed), thickness, and opacity.
+* **Aspect Ratio Display/Lock:** Display the current aspect ratio of the frame and offer an option to lock it to common ratios (e.g., 16:9, 4:3).
+* **Dimension Display:** Show the exact pixel dimensions (width x height) and screen coordinates (X, Y) of the frame.
+* **Multiple Frames/Presets:** Enable the creation and management of multiple independent frames, or save/load frame position/size presets.
+* **Hotkeys & Shortcuts:** Implement keyboard shortcuts for common actions like toggling frame visibility, resetting the frame, or initiating a new frame draw.
+* **Snap-to-Grid/Window:** Add functionality to snap the frame to a customizable grid or align it with the edges of other active windows.
+* **Basic Settings UI:** A small, non-intrusive settings panel for managing customization options.
+* **System Tray Integration:** Provide an icon in the system tray (or menu bar on macOS) for quick access to app controls.
+```

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Framer</title>
+</head>
+<body>
+  <div id="framer-main">
+    <div class="resize-handle" id="handle-nw"></div>
+    <div class="resize-handle" id="handle-n"></div>
+    <div class="resize-handle" id="handle-ne"></div>
+    <div class="resize-handle" id="handle-w"></div>
+    <div class="resize-handle" id="handle-e"></div>
+    <div class="resize-handle" id="handle-sw"></div>
+    <div class="resize-handle" id="handle-s"></div>
+    <div class="resize-handle" id="handle-se"></div>
+    <!-- Content of the frame, if any, could go here -->
+  </div>
+  <script>
+    console.log("Direct HTML check for window.__TAURI__ in index.html:", window.__TAURI__);
+  </script>
+  <script src="renderer.js"></script>
+</body>
+</html>
