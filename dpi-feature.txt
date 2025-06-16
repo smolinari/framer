@@ -1,0 +1,69 @@
+# Plan: Achieve 100% Application Scaling (Ignoring OS DPI Scaling)
+
+## Overall Goal:
+Make the webview content render as if the OS display scaling is always 100%, ensuring the application's UI (controls, etc.) has a consistent perceived size, while the drawn frame maps to actual physical screen pixels.
+
+## Phase 1: Global Zoom Adjustment (Most Direct Approach)
+
+1.  **Objective:**
+    *   Use Tauri's window zoom functionality to counteract the OS's DPI scaling.
+
+2.  **Steps (in App.vue `onMounted`):**
+    *   **Fetch `scaleFactor` Early:** Retrieve `monitorScaleFactor.value` from `currentMonitor()`.
+    *   **Calculate Inverse Zoom:** If `scaleFactor` is not `1.0`, calculate `desiredZoom = 1.0 / monitorScaleFactor.value`.
+    *   **Apply Zoom to WebviewWindow:** Use the Tauri API `appWindow.setZoom(desiredZoom)` (where `appWindow` is the current window instance). This should be done as early as possible.
+
+3.  **Consequences & Code Adjustments Needed:**
+    *   **`frameStyle` Dimensions (Logical Pixels will now map 1:1 to intended Physical Pixels):**
+        *   The `width` and `height` set in `frameStyle` can directly be the *physical* pixel dimensions desired for the frame.
+        *   Remove divisions by `monitorScaleFactor.value` when setting `frameStyle.width` and `frameStyle.height` from physical target dimensions (e.g., in `onMounted` defaults, `applyPreset`, `applyCustomSize`).
+        *   Example: `frameStyle.width = \`${initialTargetWidth}px\`;` (where `initialTargetWidth` is physical).
+    *   **`dimensionsText` Computed Property:**
+        *   Should now display `parseInt(frameStyle.width)` and `parseInt(frameStyle.height)` directly, as these will represent the intended physical dimensions due to the global zoom.
+    *   **CSS for Controls:**
+        *   All CSS for the control area (padding, font sizes, component sizes) will render as if OS scaling is 100%.
+        *   Define their sizes in CSS pixels as you want them to appear at a 100% scale.
+    *   **Coordinate System:**
+        *   Mouse event coordinates (`event.clientX`, `event.clientY`) and element offsets should now be in this "zoomed" logical coordinate space, aligning with your 100% physical pixel intention. No manual scaling of mouse coordinates should be needed for drag/resize logic.
+    *   **`MIN_FRAME_WIDTH`, `MIN_FRAME_HEIGHT`:**
+        *   These will now represent minimum physical pixel dimensions.
+
+4.  **Verification:**
+    *   Build and run the `.exe`.
+    *   Check if the control area and its contents appear at the size expected for a 100% scaled display.
+    *   Verify that the frame, when set to a specific size (e.g., 1920x1080), occupies that exact number of physical pixels on the screen.
+    *   Assess the clarity of text and vector graphics (zoom can sometimes introduce minor rendering differences).
+
+## Phase 2: Fallback/Alternative - CSS Transform (If Zoom Isn't Ideal)
+
+1.  **Objective:**
+    *   Use CSS `transform: scale()` on the root application element if `setZoom()` has undesirable side effects (e.g., poor text rendering, event coordinate issues).
+
+2.  **Steps:**
+    *   Get `monitorScaleFactor.value` as before.
+    *   Apply CSS `transform: scale(1 / monitorScaleFactor.value)` to the main app container (e.g., `.app-container` or even `body`/`html` via JavaScript).
+    *   Set `transform-origin: 0 0;` for the scaled element.
+
+3.  **Consequences & Code Adjustments:**
+    *   Similar to the zoom approach for `frameStyle` dimensions and CSS for controls (define as if for 100% scale).
+    *   **Major Challenge: Mouse Event Coordinates:**
+        *   Mouse event coordinates (`event.clientX`, `event.clientY`) will be reported relative to the *untransformed* layout.
+        *   You would need to manually adjust all mouse coordinates by multiplying them by `monitorScaleFactor.value` *before* using them in your drag/resize logic that updates `frameStyle`. This adds significant complexity to `onFrameMouseMove`, `onResizeMouseMove`, etc.
+    *   Rendering quality (text, images) can be more noticeably degraded with CSS transforms compared to webview zoom, especially for fractional scaling factors.
+
+4.  **Verification:**
+    *   Similar to Phase 1, but pay extra close attention to the accuracy of mouse interactions and overall rendering quality.
+
+## Phase 3: Deep Dive (If Above Fails or is Unsatisfactory)
+
+1.  **WebView2-Specific DPI Settings:**
+    *   Research if there are very low-level WebView2 initialization parameters (potentially accessible via custom Rust code that modifies how Tauri creates the webview) to force a specific DPI awareness mode or scaling behavior. This is advanced, platform-specific, and less portable.
+
+2.  **Re-evaluate "Fighting" Scaling for UI Controls:**
+    *   If achieving a perfect 100% render for the *entire app UI* proves overly complex or significantly degrades quality, reconsider the approach for the UI controls.
+    *   Option: Allow the UI controls to scale naturally with the OS DPI settings (as they do now).
+    *   Focus solely on ensuring the *drawn frame's dimensions* are accurately mapped to physical pixels (as per our previous discussion: `frameStyle` uses logical pixels calculated by dividing desired physical by `scaleFactor`, and `dimensionsText` displays physical pixels by multiplying logical by `scaleFactor`).
+    *   This means the controls might appear larger (e.g., at 120% on your system), but the frame itself would be dimensionally correct in physical terms. This is often a good compromise.
+
+## Initial Focus:
+Concentrate on **Phase 1 (Global Zoom Adjustment)** first. It's the most direct approach using existing Tauri APIs and has the best chance of achieving the desired outcome with manageable changes to the Vue code.

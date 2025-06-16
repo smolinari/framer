@@ -1,17 +1,19 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "MyTauriAppTest",
+  "productName": "Framer",
   "version": "0.1.0",
-  "identifier": "com.example.mytauriapp",
+  "identifier": "com.framer.app", 
   "build": {
-    "frontendDist": "../src"
+    "devUrl": "http://localhost:5173", 
+    "frontendDist": "../src-frontend/dist", 
+    "beforeDevCommand": "pnpm run dev", 
+    "beforeBuildCommand": "pnpm run build" 
   },
   "app": {
     "windows": [
       {
         "label": "main",
         "title": "Framer", 
-        "url": "index.html",
         "maximized": true,   
         "transparent": true, 
         "decorations": false,

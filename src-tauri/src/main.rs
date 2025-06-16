@@ -2,9 +2,11 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-  tauri::Builder::default()
-    .plugin(tauri_plugin_log::Builder::default().build()) // Assuming you want to keep the logger plugin
-    // .invoke_handler(tauri::generate_handler![setup_control_window_from_rust]) // Command removed
-    .run(tauri::generate_context!())
-    .expect("error while running tauri application");
+    tauri::Builder::default()
+        .plugin(tauri_plugin_store::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
+        .plugin(tauri_plugin_log::Builder::default().build()) // Assuming you want to keep the logger plugin
+        // .invoke_handler(tauri::generate_handler![setup_control_window_from_rust]) // Command removed
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
 }
