@@ -1,29 +1,45 @@
 Project: Screen Framer Tauri App
 
-Current Goal: Test the "always-on-top" window feature in a production build on Windows to see if it behaves differently than in the development environment where it was sometimes being covered by other windows.
+Current Goal: Resolve click-through issues and fine-tune UI scaling for a Windows 11 system with 120% custom display scaling on a high-DPI (5K) monitor. The application should allow clicks to pass through its transparent areas to underlying windows, and its UI controls should appear as if the OS scaling is 100%.
 
-Build Process for Windows (from WSL):
-1.  Successfully added the `x86_64-pc-windows-gnu` Rust target.
-2.  Successfully installed `mingw-w64` in WSL.
-3.  Modified `tauri.conf.json` to set `bundle.targets = []` to avoid NSIS installer errors during cross-compilation and get just the `.exe`.
-4.  Built the app using `cargo tauri build --target x86_64-pc-windows-gnu`.
-5.  The `.exe` is located at `/home/scott/tmp-dev/Framer/src-tauri/target/x86_64-pc-windows-gnu/release/app.exe`.
+Key Issues & Troubleshooting Steps Taken:
 
-Running the .exe on Windows:
-1.  Encountered Windows Defender SmartScreen: Bypassed using "More info" -> "Run anyway".
-2.  Encountered "WebView2.dll not found" error.
-3.  Attempted Fix: Downloaded and installed the WebView2 Evergreen Bootstrapper from the official Microsoft site.
-4.  Restarted Windows machine: Still received the "WebView2.dll not found" error.
-5.  Checked "Apps & features" to uninstall/reinstall bootstrapper: "Microsoft Edge WebView2 Runtime" was not listed, indicating the initial install likely failed.
-6.  Attempted Fix 2: Re-ran the WebView2 Evergreen Bootstrapper installer as administrator. The installer ran for a period and then closed without any success confirmation or error message. "Microsoft Edge WebView2 Runtime" still not listed in "Apps & features".
-7.  Current Issue: "WebView2.dll not found" error persists. The system-wide WebView2 runtime installation seems problematic.
-8.  Attempted Fix 3: Tried installing the WebView2 Runtime (not the bootstrapper). Installer reported a newer version of Edge was already installed.
-9.  Uninstalled Microsoft Edge. The runtime installer still reported a newer version of Edge was present.
-10. Advised to reboot the Windows machine to ensure the Edge uninstallation is fully recognized by the system.
+1.  **UI Scaling (Controls appearing too large):**
+    *   Identified that Windows "Custom Scaling" was set to 120%.
+    *   Goal: Make the app's UI (controls, dialogs) render as if OS scaling is 100%.
+    *   Implemented logic in `App.vue`'s `onMounted` to:
+        *   Detect `monitorScaleFactor` (prioritizing Tauri's `currentMonitor().scaleFactor` which reported ~1.197, close to 1.2).
+        *   Calculate a `desiredZoom = 1.0 / monitorScaleFactor.value`.
+        *   Apply this zoom using `getCurrentWebview().setZoom(desiredZoom)`.
+        *   Permission `core:webview:allow-set-webview-zoom` was added to `control-window-access.json` and referenced in `tauri.conf.json` to allow `setZoom`.
+    *   Empirically found that a direct inverse zoom wasn't visually perfect. An `empiricalCorrectionFactor` was calculated to adjust the `desiredZoom` to achieve a target visual zoom of approximately `0.604`.
+    *   A temporary diagnostic slider was added and then removed.
+    *   Current state: The app automatically applies this empirically corrected zoom. The UI scaling seems close, but minor discrepancies in frame dimensions (e.g., 1920px target resulting in ~1940px physical width) were noted, suggesting the complexity of perfect pixel mapping with custom OS scaling.
 
-Next Step: Configure Tauri to bundle a fixed version of the WebView2 runtime directly with the application.
-    a.  Download the WebView2 Fixed Version Runtime CAB file (x64).
-    b.  Place the CAB file in `src-tauri/webview2-runtime/`.
-    c.  Modify `tauri.conf.json` to set `bundle.windows.webviewInstallMode.type` to `"fixedRuntime"` and `bundle.windows.webviewInstallMode.path` to the CAB file location.
-    d.  Rebuild the application with `cargo tauri build --target x86_64-pc-windows-gnu`.
-    e.  Copy the entire contents of the `release` directory (including the app.exe, WebView2Loader.dll, and the WebView2 runtime folder) to Windows and test.
+2.  **Click-Through Not Working:**
+    *   The main application window, despite being configured as transparent in `tauri.conf.json`, is not allowing clicks to pass through to underlying windows or the desktop.
+    *   Troubleshooting steps taken:
+        *   Ensured `background-color: transparent;` is set for `:root`, `body`, and `#app` in global `style.css`.
+        *   Ensured `.app-container` in `App.vue` has `background: transparent !important;`.
+        *   Attempted using `pointer-events: none;` on `#app` and `pointer-events: auto;` on `.app-container`.
+    *   Current state: Click-through is still not working. The "move" cursor appears over the transparent interior of the frame, indicating the webview is capturing mouse events.
+
+3.  **White Flash on Startup:**
+    *   A white window was appearing briefly on startup before the transparent content loaded.
+    *   Attempted fixes:
+        *   Set `visible: false` in `tauri.conf.json` for the main window.
+        *   Added logic in `App.vue`'s `onMounted` to call `appWindow.show()` after setup.
+        *   Set inline style `background-color: transparent;` on `<body>` in `index.html`.
+        *   Set `shadow: false` in `tauri.conf.json`.
+    *   Current state: White flash is still present.
+
+4.  **Logging:**
+    *   Switched from `console.log` to `tauri-plugin-log` (`logInfo`, `logError`) for reliable logging in packaged apps.
+    *   `lib.rs` configured to initialize the logger for debug builds, outputting to `stdout` and log files.
+    *   Logs are successfully being captured in the terminal when running the `.exe` from PowerShell.
+
+Current Focus (after Windows restart):
+*   **Resolve the persistent click-through issue.** This is critical for usability.
+*   **Eliminate the white flash on startup.**
+*   Further refine UI scaling if necessary, though the current empirically derived zoom is close.
+*   Continue refactoring `App.vue` into smaller components (started with `ControlsArea.vue`, but this was part of a troubleshooting step for click-through and might be reverted or continued based on findings).

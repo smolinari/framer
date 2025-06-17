@@ -1,4 +1,4 @@
-<!doctype html>
+<!-- <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -6,7 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + Vue + TS</title>
   </head>
+  <body style="background-color: transparent;">
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html> -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- You can keep your existing icon link or remove it for this test -->
+    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Framer Test</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden; /* Prevent scrollbars */
+        /* background: transparent !important; /* Crucial for window transparency */
+        box-sizing: border-box;
+      }
+      /*
+        Make the body itself click-through by default.
+        Specific elements like our testBox will override this with pointer-events: auto.
+      */
+      body {
+        background-color: rgba(0,0,0,0.002);
+        pointer-events: auto;
+      }
+    </style>
+  </head>
   <body>
+    <!-- The div#app is where Vue usually mounts. It can remain or be removed for this test.
+         Our plain JS test appends its element directly to document.body. -->
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>

@@ -17,5 +17,11 @@ export default defineConfig({
         new URL('./src/quasar-variables.sass', import.meta.url)
       )
     })
-  ]
+  ],
+  server: {
+    watch: {
+      // Ignore all files with .old extension
+      ignored: ['**/*.old']
+    }
+  }
 })

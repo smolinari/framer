@@ -1,0 +1,251 @@
+<template>
+  <div class="app-container">
+    <ControlsArea
+      v-model="toggleState"
+      :available-desktop-presets="availableDesktopPresets"
+      :available-mobile-presets="availableMobilePresets"
+      @apply-preset="applyPreset"
+      @open-custom-size="openCustomSizeDialog"
+      @open-about="openAboutDialog"
+      @open-system-info="openSystemInfoDialog"
+      @close-app="closeApp"
+      @update:model-value="onToggleChange"
+    />
+
+    <FrameDisplay
+      :is-frame-active="isFrameActive"
+      :frame-style="frameStyle"
+      :is-resizing="isResizing"
+      :dimensions-text="dimensionsText"
+      @frame-mousedown="onFrameMouseDown"
+      @resize-handle-mousedown="onResizeHandleMouseDown"
+    />
+  </div>
+
+  <!-- About Dialog -->
+  <AboutDialog
+    v-model="isAboutDialogOpen"
+    :app-name="appName"
+    :app-version="appVersion"
+  />
+
+  <!-- System Info Dialog -->
+  <SystemInfoDialog
+    v-model="isSystemInfoDialogOpen"
+    :monitor-physical-width="monitorPhysicalWidth"
+    :monitor-physical-height="monitorPhysicalHeight"
+    :monitor-scale-factor="monitorScaleFactor"
+    :applied-app-zoom="appliedAppZoom"
+    :frame-style="frameStyle"
+    :os-type="osType"
+    :os-platform="osPlatform"
+    :os-arch="osArch"
+    :os-version-info="osVersionInfo"
+  />
+
+  <!-- Custom Size Dialog -->
+  <CustomSizeDialog
+    v-model="isCustomSizeDialogOpen"
+    :initial-width="parseInt(frameStyle.width, 10) || null"
+    :initial-height="parseInt(frameStyle.height, 10) || null"
+    @apply-custom-size="applyCustomSizeFromDialog"
+  />
+</template>
+
+<script setup lang="ts">
+import { ref, reactive, computed, onMounted } from 'vue'
+import { getCurrentWindow } from '@tauri-apps/api/window';
+import { info as logInfo, error as logError } from '@tauri-apps/plugin-log';
+import { exit as tauriExit } from '@tauri-apps/plugin-process';
+
+import ControlsArea from './components/ControlsArea.vue';
+import FrameDisplay from './components/FrameDisplay.vue';
+import AboutDialog from './components/dialogs/AboutDialog.vue';
+import SystemInfoDialog from './components/dialogs/SystemInfoDialog.vue';
+import CustomSizeDialog from './components/dialogs/CustomSizeDialog.vue';
+import { useAppSysInfo } from './src-frontend/src/composables/useAppSysInfo';
+import { useMonitorAndScaling } from './src-frontend/src/composables/useMonitorAndScaling';
+import { useFrameGeometry } from './src-frontend/src/composables/useFrameGeometry';
+import { useFramePersistence } from './src-frontend/src/composables/useFramePersistence';
+import { usePresets, type ScreenPreset } from './src-frontend/src/composables/usePresets';
+import { useFrameDragging } from './src-frontend/src/composables/useFrameDragging';
+import { useFrameResizing } from './src-frontend/src/composables/useFrameResizing';
+import { CONTROLS_AREA_HEIGHT } from './src-frontend/src/config/constants';
+
+// --- Frame State & Style ---
+const isFrameActive = ref(false)
+const frameStyle = reactive({
+  display: 'block',
+  left: '0px',
+  top: '0px',
+  width: '0px', // Will be initialized to physical dimensions
+  height: '0px', // Will be initialized to physical dimensions
+  border: '8px solid red',
+  position: 'absolute' as const,
+  backgroundColor: 'transparent',
+  boxSizing: 'border-box' as const,
+  cursor: 'move',
+  zIndex: 100,
+  userSelect: 'auto' as 'none' | 'auto',
+})
+
+// --- Screen & Preset State ---
+const { monitorPhysicalWidth, monitorPhysicalHeight, monitorScaleFactor, appliedAppZoom, fetchMonitorAndApplyScaling } = useMonitorAndScaling();
+
+const toggleState = ref(true);
+
+// --- Dialog States ---
+const isCustomSizeDialogOpen = ref(false);
+const isSystemInfoDialogOpen = ref(false);
+const isAboutDialogOpen = ref(false);
+
+// --- Composable Initializations ---
+const { appName, appVersion, osArch, osPlatform, osType, osVersionInfo, fetchAppSysInfo } = useAppSysInfo();
+const { saveFrameState } = useFramePersistence(frameStyle);
+const { initializeFrameGeometry } = useFrameGeometry(frameStyle, monitorPhysicalWidth, monitorPhysicalHeight);
+const { onFrameMouseDown } = useFrameDragging(frameStyle, saveFrameState);
+const { isResizing, onResizeHandleMouseDown } = useFrameResizing(frameStyle, saveFrameState);
+const { availableDesktopPresets, availableMobilePresets, applyPreset } = usePresets(monitorPhysicalWidth, monitorPhysicalHeight, frameStyle, isFrameActive, toggleState, saveFrameState);
+
+const dimensionsText = computed(() => {
+  if (!isFrameActive.value || frameStyle.display === 'none') return '';
+  return `w: ${parseInt(frameStyle.width, 10)}px h: ${parseInt(frameStyle.height, 10)}px`;
+});
+
+function onToggleChange(value: boolean | number | string) {
+  const isActive = Boolean(value);
+  isFrameActive.value = isActive;
+  if (isActive) {
+    logInfo("Vue App: Frame is ON (isFrameActive set to true)");
+  } else {
+    logInfo("Vue App: Frame is OFF (isFrameActive set to false)");
+  }
+}
+
+onMounted(async () => {
+  await logInfo("onMounted: Start");
+  // await logInfo(`onMounted: Initial window.devicePixelRatio reported by browser: ${window.devicePixelRatio}`); // Can be verbose
+  let initialTargetWidth = 1920; // Default PHYSICAL width
+  let initialTargetHeight = 1080; // Default PHYSICAL height
+
+  try {
+    await fetchAppSysInfo();
+    await fetchMonitorAndApplyScaling();
+    await initializeFrameGeometry(initialTargetWidth, initialTargetHeight);
+  } catch (error) {
+    await logError(`onMounted: Error during initial setup: ${error}`);
+    // Fallback for frameStyle if composables fail catastrophically
+    frameStyle.width = `${initialTargetWidth}px`;
+    frameStyle.height = `${initialTargetHeight}px`;
+    const newLeft = (monitorPhysicalWidth.value / 2) - (initialTargetWidth / 2); // monitorPhysicalWidth should have a fallback from its composable
+    const newTop = (monitorPhysicalHeight.value / 2) - (initialTargetHeight / 2); // monitorPhysicalHeight should have a fallback
+    frameStyle.left = `${Math.max(0, newLeft)}px`;
+    frameStyle.top = `${Math.max(CONTROLS_AREA_HEIGHT, newTop)}px`;
+  }
+
+  // await logInfo("onMounted: DEBUG - After initializeInteractiveState."); // This log might be confusing now
+  await logInfo(`onMounted: Final frame style before activation (physical pixels): ${JSON.stringify(frameStyle)}`);
+  if (toggleState.value) {
+    setTimeout(async () => {
+      isFrameActive.value = true;
+      await logInfo("onMounted: Frame set to active and should be visible (after timeout).");
+    }, 50);
+  } else {
+    isFrameActive.value = false;
+    await logInfo("onMounted: Frame set to INACTIVE initially (toggleState is false).");
+  }
+
+  // Ensure the window is interactive by default
+  try {
+    const appWindow = getCurrentWindow();
+    await appWindow.setIgnoreCursorEvents(false);
+    await logInfo("onMounted: Window explicitly set to INTERACTIVE (ignoreCursorEvents: false).");
+  } catch (e) {
+    await logError(`onMounted: Error setting window to interactive: ${e}`);
+  }
+
+  await logInfo("onMounted: Setup complete.");
+});
+
+function openCustomSizeDialog() {
+  isCustomSizeDialogOpen.value = true;
+}
+
+function applyCustomSizeFromDialog(width: number, height: number) {
+  const customPreset: ScreenPreset = {
+    label: `Custom (${width}x${height})`,
+    width: width,
+    height: height,
+    type: 'desktop',
+  };
+  applyPreset(customPreset);
+  // The CustomSizeDialog component now closes itself on apply.
+}
+
+function openAboutDialog() {
+  isAboutDialogOpen.value = true;
+}
+
+function openSystemInfoDialog() {
+  isSystemInfoDialogOpen.value = true;
+}
+
+async function closeApp() {
+  await logInfo("Attempting to close application...");
+  await tauriExit(0);
+}
+</script>
+
+<style scoped>
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.vue:hover {
+  filter: drop-shadow(0 0 2em #42b883aa);
+}
+
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden; /* Important for transparent window */
+  background: transparent !important;
+  pointer-events: auto; /* Ensure the app container itself can be a target for events, allowing children to receive them */
+}
+
+/* Styles moved to ControlsArea.vue, but keep .themed-dialog-card and #framer-vue-main related styles here */
+.preset-menu-list .q-item {
+  color: white;
+}
+
+.preset-menu-list .q-item .q-item__section {
+  font-size: 1.12em;
+}
+
+.q-item__label--header {
+  background-color: #003148;
+  color: white !important;
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.themed-dialog-card {
+  background-color: #003f5c;
+  color: white;
+}
+
+.themed-dialog-card .text-h6,
+.themed-dialog-card .text-subtitle2,
+.themed-dialog-card p {
+  color: white;
+}
+
+
+/* #framer-vue-main styles are effectively handled by FrameDisplay.vue now */
+  /* Dynamic styles are applied via :style="frameStyle" */
+</style>

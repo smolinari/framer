@@ -14,19 +14,22 @@
       {
         "label": "main",
         "title": "Framer", 
-        "maximized": true,   
+        "maximized": false,   
         "transparent": true, 
         "decorations": false,
-        "alwaysOnTop": true, 
-        "visible": true,     
+        "alwaysOnTop": true,
+        "visible": true,
         "resizable": false,  
         "fullscreen": false,
-        "skipTaskbar": true  
+        "skipTaskbar": true,
+        "shadow": false 
       }
     ],
     "security": {
       "csp": null,
-      "capabilities": ["control-window-access"]
+      "capabilities": [
+        "control-window-access"
+      ]
     },
     "withGlobalTauri": true
   },
