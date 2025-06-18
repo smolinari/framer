@@ -72,9 +72,18 @@ function emitUpdateModelValue(value: boolean) {
 
 .themed-dialog-card .text-h6,
 .themed-dialog-card .text-subtitle2,
-.themed-dialog-card p,
-.themed-dialog-card div strong {
+.themed-dialog-card div { /* General text within sections */
   color: white; /* Ensure text inside sections is white */
+}
+
+.themed-dialog-card .text-h6 {
+  font-size: 1.5rem; /* 20% increase */
+}
+.themed-dialog-card .text-subtitle2 {
+  font-size: 1.05rem; /* 20% increase from Quasar's default 0.875rem */
+}
+.themed-dialog-card div { /* For general text like "Monitor Physical Res:" */
+  font-size: 1.2rem; /* Approx 20% increase */
 }
 
 .themed-dialog-card .q-separator {

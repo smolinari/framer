@@ -2,6 +2,11 @@
   <div
     class="controls-area"
   >
+    <div
+      class="interactive-status-light"
+      :style="{ backgroundColor: props.isAppInteractive ? 'lightgreen' : 'red' }"
+      :title="`App is currently ${props.isAppInteractive ? 'Interactive' : 'Click-Through'}`"
+    ></div>
     <q-btn
       dense
       flat
@@ -87,6 +92,7 @@ const props = defineProps<{
   modelValue: boolean; // For v-model on q-toggle
   availableDesktopPresets: ScreenPreset[];
   availableMobilePresets: ScreenPreset[];
+  isAppInteractive: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -129,6 +135,8 @@ function handleApplyPreset(preset: ScreenPreset) {
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   border: 2px solid white;
   pointer-events: auto; /* Ensure controls area itself is interactive */
+  display: flex; /* Added for easy alignment of status light and buttons */
+  align-items: center; /* Vertically align items */
 }
 
 .preset-menu-list {
@@ -140,13 +148,23 @@ function handleApplyPreset(preset: ScreenPreset) {
 }
 
 .preset-menu-list .q-item .q-item__section {
-  font-size: 1.12em;
+  font-size: 1.34em; /* Approx 20% increase from 1.12em */
 }
 
 .q-item__label--header {
   background-color: #003148;
   color: white !important;
   font-weight: bold;
-  font-size: 1.25rem;
+  font-size: 1.5rem; /* 20% increase from 1.25rem */
+}
+
+.interactive-status-light {
+  width: 20px; /* Increased size by 6px */
+  height: 20px; /* Increased size by 6px */
+  border-radius: 50%;
+  margin-left: 7px; /* Increased left margin by 2px */
+  margin-right: 8px; /* Space between light and the '+' button */
+  border: 1px solid rgba(255, 255, 255, 0.6); /* Optional subtle border */
+  flex-shrink: 0; /* Prevent shrinking if controls area gets crowded */
 }
 </style>

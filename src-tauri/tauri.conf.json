@@ -14,15 +14,16 @@
       {
         "label": "main",
         "title": "Framer", 
-        "maximized": false,   
-        "transparent": true, 
+        "transparent": true,
         "decorations": false,
         "alwaysOnTop": true,
+        "maximized": true,
         "visible": true,
         "resizable": false,  
-        "fullscreen": false,
-        "skipTaskbar": true,
-        "shadow": false 
+        "fullscreen": true,
+        "skipTaskbar": false,
+        "shadow": false,
+        "devtools": true
       }
     ],
     "security": {

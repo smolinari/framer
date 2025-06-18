@@ -18,15 +18,22 @@ export function useWindowInteractiveState() {
   async function setWindowInteractive(interactive: boolean) {
     if (isProgrammaticallyInteractive.value === interactive) {
       await logInfo(`Window interactive state already ${interactive}. No Tauri call needed.`);
+      console.log(`[CONSOLE.LOG] Window interactive state already ${interactive}. No Tauri call needed.`);
       return; // Avoid redundant calls
     }
 
     try {
-      await appWindow.setIgnoreCursorEvents(!interactive); // true for click-through, false for interactive
+      // Set ignoreCursorEvents (true for click-through, false for interactive)
+      await appWindow.setIgnoreCursorEvents(!interactive); 
       isProgrammaticallyInteractive.value = interactive;
+      // Re-assert fullscreen and undecorated state, as focus changes can sometimes affect this for alwaysOnTop windows
+      await appWindow.setFullscreen(true); 
+      await appWindow.setDecorations(false); 
       await logInfo(`Window ignoreCursorEvents set to: ${!interactive} (Programmatically Interactive: ${interactive})`);
+      console.log(`[CONSOLE.LOG] Window ignoreCursorEvents set to: ${!interactive} (Programmatically Interactive: ${interactive})`);
     } catch (e) {
       await logError(`Error setting window ignoreCursorEvents to ${!interactive}: ${e}`);
+      console.error(`[CONSOLE.ERROR] Error setting window ignoreCursorEvents to ${!interactive}:`, e);
     }
   }
 
@@ -40,14 +47,24 @@ export function useWindowInteractiveState() {
       await appWindow.setIgnoreCursorEvents(!initialInteractiveState);
       isProgrammaticallyInteractive.value = initialInteractiveState;
       await logInfo(`Initial window ignoreCursorEvents set to: ${!initialInteractiveState} (Programmatically Interactive: ${initialInteractiveState})`);
+      console.log(`[CONSOLE.LOG] Initial window ignoreCursorEvents set to: ${!initialInteractiveState} (Programmatically Interactive: ${initialInteractiveState})`);
     } catch (e) {
       await logError(`Error setting initial window ignoreCursorEvents: ${e}`);
+      console.error(`[CONSOLE.ERROR] Error setting initial window ignoreCursorEvents:`, e);
     }
   }
 
+  // Function to toggle the current tracked interactive state
+  async function toggleCurrentInteractiveState() {
+    await logInfo(`Toggling interactive state. Current isProgrammaticallyInteractive: ${isProgrammaticallyInteractive.value}`);
+    console.log(`[CONSOLE.LOG] Toggling interactive state. Current isProgrammaticallyInteractive: ${isProgrammaticallyInteractive.value}`);
+    await setWindowInteractive(!isProgrammaticallyInteractive.value);
+  }
+
   return {
-    // isProgrammaticallyInteractive, // Expose if needed for readonly checks, but primarily for internal use
+    isProgrammaticallyInteractive, // Expose the ref for readonly access
     setWindowInteractive,
     initializeInteractiveState,
+    toggleCurrentInteractiveState, // Expose the toggle function
   };
 }

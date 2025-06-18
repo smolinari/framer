@@ -75,16 +75,19 @@ function handleApply() {
 
 .themed-dialog-card .text-h6,
 .themed-dialog-card .text-subtitle2,
-.themed-dialog-card p,
-.themed-dialog-card div strong,
 .themed-dialog-card .q-input { /* Ensure input text and label are also styled if needed */
   color: white;
+}
+
+.themed-dialog-card .text-h6 {
+  font-size: 1.5rem; /* 20% increase */
 }
 
 /* If Quasar input's default label/text color isn't white on this background, you might need more specific selectors */
 :deep(.q-field__label),
 :deep(.q-field__native) {
   color: white !important;
+  font-size: 1.2rem; /* Approx 20% increase for input text and label */
 }
 
 :deep(.q-field__control):before {

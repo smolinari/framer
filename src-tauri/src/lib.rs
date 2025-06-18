@@ -3,16 +3,17 @@ use tauri_plugin_log::{Target, TargetKind};
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let mut builder = tauri::Builder::default();
+    log::info!("LIB.RS: run() function in lib.rs was called!"); // Add this unique log
 
     if cfg!(debug_assertions) {
-            let targets = [
-                Target::new(TargetKind::Stdout),
-                Target::new(TargetKind::LogDir { file_name: None }), // None uses default "app.log"
-                // Target::new(TargetKind::Webview), // Uncomment to send logs to webview console too
-            ];
+        let targets = [
+            Target::new(TargetKind::Stdout),
+            Target::new(TargetKind::LogDir { file_name: None }), // None uses default "app.log"
+            Target::new(TargetKind::Webview), // Uncomment to send logs to webview console too
+        ];
         builder = builder.plugin(
             tauri_plugin_log::Builder::default()
-                    .targets(targets)
+                .targets(targets)
                 .level(log::LevelFilter::Info) // Set log level for debug builds
                 .build(),
         );

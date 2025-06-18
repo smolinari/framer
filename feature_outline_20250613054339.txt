@@ -1,7 +1,7 @@
 ```
 App Features:
 
-* **Click-and-Drag Frame Creation:** Users can click and drag on the screen to define the initial size and position of a capture frame.
+* **Click-and-Drag Frame Creation:** Users can click and drag on the screen to define the initial size and position of a capture frame. This may involve a hotkey combination to temporarily disable click-through and allow the window to capture mouse events for drawing.
 * **Always-On-Top Persistence:** Once created, the frame remains visible on the screen and stays above all other application windows.
 * **Resizable Frame:** The frame's dimensions can be adjusted by dragging its sides and corners.
 * **Proportional Scaling:** Holding the 'Ctrl' key during resizing will proportionally scale the entire frame, maintaining its aspect ratio.
