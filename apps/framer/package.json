@@ -1,0 +1,11 @@
+{
+  "name": "framer",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --dir src-frontend dev",
+    "build": "pnpm --dir src-frontend build",
+    "tauri": "pnpm --dir src-frontend tauri"
+  }
+}
+

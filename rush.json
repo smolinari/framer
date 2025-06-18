@@ -427,12 +427,18 @@
     //   // "tags": [ "1.0.0-release", "frontend-team" ]
     // },
     // 
-    // {
-    //   "packageName": "my-controls",
-    //   "projectFolder": "libraries/my-controls",
-    //   "reviewCategory": "production",
-    //   "tags": [ "frontend-team" ]
-    // },
+    {
+      "packageName": "framer",
+      "projectFolder": "apps/framer",
+      "reviewCategory": "production",
+      "tags": [ "framer-app" ]
+    },
+      {
+      "packageName": "framer-site",
+      "projectFolder": "sites/framer",
+      "reviewCategory": "production",
+      "tags": [ "framer-site" ]
+    }
     // 
     // {
     //   "packageName": "my-toolchain",
