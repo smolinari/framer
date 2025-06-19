@@ -39,7 +39,7 @@ RUN git clone --branch ${REPO_BRANCH} ${REPO_URL} .
 # These mounts help prevent EXDEV errors and significantly speed up builds by caching node_modules.
 RUN --mount=type=cache,target=/root/.npm \
     --mount=type=cache,target=/usr/src/monorepo/common/temp \
-    rush install --purge
+    rush update --full --purge
 
 # Now, change the working directory to the specific project's folder you want to build.
 WORKDIR /usr/src/monorepo/sites/framer
