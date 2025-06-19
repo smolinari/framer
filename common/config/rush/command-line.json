@@ -11,7 +11,7 @@
    * "rush my-global-command --help".
    */
   "commands": [
-    // {
+    {
     //   /**
     //    * (Required) Determines the type of custom command.
     //    * Rush's "bulk" commands are invoked separately for each project.  By default, the command will run for
@@ -111,7 +111,7 @@
     //    *
     //    * Note: The default value is false. In Rush 5.7.x and earlier, the default value was true.
     //    */
-    //   "allowWarningsInSuccessfulBuild": false,
+    "allowWarningsInSuccessfulBuild": true
     // 
     //   /**
     //    * If true then this command will be incremental like the built-in "build" command
@@ -133,7 +133,7 @@
     //    * projects' own folders.
     //    */
     //   "disableBuildCache": false
-    // },
+    }
     // 
     // {
     //   /**
