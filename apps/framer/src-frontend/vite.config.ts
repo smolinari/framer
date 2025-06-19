@@ -2,6 +2,7 @@ import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
+import path from 'node:path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,9 +20,13 @@ export default defineConfig({
     })
   ],
   server: {
-    watch: {
-      // Ignore all files with .old extension
-      ignored: ['**/*.old']
-    }
+    fs: {
+      // Allow serving files from one level up to the project root
+      // and the monorepo's common node_modules directory
+      allow: [
+        path.resolve(__dirname, '../../../common/temp/node_modules/'), // Path to Rush's common node_modules
+        path.resolve(__dirname, '../../'), // Allow serving from the 'apps/framer' directory (one level up from src-frontend)
+      ],
+    },
   }
 })

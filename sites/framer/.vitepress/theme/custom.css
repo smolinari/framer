@@ -1,0 +1,43 @@
+/* .vitepress/theme/custom.css */
+
+/* Set the overall background color for the site */
+:root {
+  --vp-c-bg: #071526; /* Overall background */
+  --vp-c-bg-soft: #081a2e; /* Slightly darker blue for soft backgrounds, used for sidebar */
+  --vp-home-hero-name-color: #ffffff;
+  --vp-home-hero-text-color: #adbdd1;
+  --vp-home-hero-tagline-color: #8da3c0;
+  --vp-sidebar-bg-color: var(--vp-c-bg-soft); /* Use the darker soft blue for the sidebar */
+}
+
+/* Style the features cards on the homepage */
+.VPHomeFeatures .VPFeature {
+  background-color: #1e3f5c !important; /* Darkened from #224667 */
+}
+
+/* Ensure feature card text is readable on the new background */
+.VPHomeFeatures .VPFeature .title,
+.VPHomeFeatures .VPFeature .details {
+  color: #ffffff; /* Or a light color that contrasts well with #224667 */
+}
+
+/* Increase logo size in the navbar */
+.VPNavBarTitle .logo {
+  height: 40px !important; /* Default is around 24px, 24 * 1.3 = 31.2 */
+  /* You might also want to adjust margin-right if it feels too close to the title */
+  /* margin-right: 10px; */
+}
+
+/* Increase site title text size in the navbar */
+.VPNavBarTitle .title {
+  font-size: 28px !important; /* Default is around 18px, 18 * 1.3 = 23.4 */
+}
+
+/* Styles for the custom "Coming Soon!" button group */
+.custom-button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px; /* Spacing between buttons */
+  justify-content: center; /* Center the buttons within this group */
+  margin-top: 16px; /* Space below the "Coming Soon!" headline */
+}

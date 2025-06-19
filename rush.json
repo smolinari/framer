@@ -26,7 +26,7 @@
    * Specify one of: "pnpmVersion", "npmVersion", or "yarnVersion".  See the Rush documentation
    * for details about these alternatives.
    */
-  "pnpmVersion": "8.15.8",
+  "pnpmVersion": "9.12.2",
 
   // "npmVersion": "6.14.15",
   // "yarnVersion": "1.9.4",
@@ -95,8 +95,8 @@
    * To remove these restrictions, you could set projectFolderMinDepth=1
    * and set projectFolderMaxDepth to a large number.
    */
-  // "projectFolderMinDepth": 2,
-  // "projectFolderMaxDepth": 2,
+  "projectFolderMinDepth": 2,
+  "projectFolderMaxDepth": 3,
 
   /**
    * Today the npmjs.com registry enforces fairly strict naming rules for packages, but in the early
@@ -427,11 +427,17 @@
     //   // "tags": [ "1.0.0-release", "frontend-team" ]
     // },
     // 
+    // {
+    //   "packageName": "framer",
+    //   "projectFolder": "apps/framer",
+    //   "reviewCategory": "production",
+    //   "tags": [ "framer-app" ]
+    // },
     {
-      "packageName": "framer",
-      "projectFolder": "apps/framer",
+      "packageName": "@framer-m8a-io/frontend",
+      "projectFolder": "apps/framer/src-frontend",
       "reviewCategory": "production",
-      "tags": [ "framer-app" ]
+      "tags": [ "framer-frontend-ui" ]
     },
       {
       "packageName": "framer-site",

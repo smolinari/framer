@@ -27,8 +27,8 @@ export function useWindowInteractiveState() {
       await appWindow.setIgnoreCursorEvents(!interactive); 
       isProgrammaticallyInteractive.value = interactive;
       // Re-assert fullscreen and undecorated state, as focus changes can sometimes affect this for alwaysOnTop windows
-      await appWindow.setFullscreen(true); 
-      await appWindow.setDecorations(false); 
+      // await appWindow.setFullscreen(true); // This line should be commented out for the test
+      await appWindow.setDecorations(false); // Keep this line to ensure decorations stay off
       await logInfo(`Window ignoreCursorEvents set to: ${!interactive} (Programmatically Interactive: ${interactive})`);
       console.log(`[CONSOLE.LOG] Window ignoreCursorEvents set to: ${!interactive} (Programmatically Interactive: ${interactive})`);
     } catch (e) {

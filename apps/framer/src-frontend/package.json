@@ -1,5 +1,5 @@
 {
-  "name": "src-frontend",
+  "name": "@framer-m8a-io/frontend",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -17,7 +17,8 @@
     "@tauri-apps/plugin-process": "^2.2.1",
     "@tauri-apps/plugin-store": "^2.2.0",
     "quasar": "^2.18.1",
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "@tauri-apps/plugin-shell": "~2.2.2"
   },
   "devDependencies": {
     "@quasar/vite-plugin": "^1.9.0",
