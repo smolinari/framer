@@ -4,9 +4,11 @@ metadata:
   name: framer-site-service
   namespace: framer-site
 spec:
+  internalTrafficPolicy: Cluster
   selector:
     app: framer-site
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 80
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
