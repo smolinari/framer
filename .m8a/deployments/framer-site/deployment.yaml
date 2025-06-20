@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: framer-site-deployment
+  namespace: framer-site
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: framer-site
+  template:
+    metadata:
+      labels:
+        app: framer-site
+    spec:
+      containers:
+      - name: framer-site
+        image: scottmolinari/my-apps:framer-site-1.0.0
+        ports:
+        - containerPort: 80
