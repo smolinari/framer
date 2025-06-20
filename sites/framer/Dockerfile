@@ -63,4 +63,4 @@ COPY --from=builder /usr/src/monorepo/sites/framer/.vitepress/dist ./
 EXPOSE 8080
 
 # Define the command to run when the container starts.
-CMD ["http-server", "-p", "8080", "."]
+CMD ["http-server", "-p", "8080", "-a", "0.0.0.0", "."]
