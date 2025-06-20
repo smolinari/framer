@@ -8,4 +8,4 @@ metadata:
 spec:
   hostname: framer-app.m8a.io
   prefix: /
-  service: framer-site-service.framer-site
+  service: framer-site-service.framer-site:8080
