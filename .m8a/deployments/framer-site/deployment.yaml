@@ -4,7 +4,7 @@ metadata:
   name: framer-site-deployment
   namespace: framer-site
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: framer-site
