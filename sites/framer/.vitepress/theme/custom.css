@@ -41,3 +41,180 @@
   justify-content: center; /* Center the buttons within this group */
   margin-top: 16px; /* Space below the "Coming Soon!" headline */
 }
+
+.custom-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+  margin: 3rem auto;
+  max-width: 1152px;
+  padding: 0 24px;
+}
+
+@media (min-width: 768px) {
+  .custom-hero-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.custom-hero-grid .title {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  color: var(--vp-c-text-1);
+}
+
+.custom-hero-grid .tagline {
+  padding-top: 1rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: var(--vp-c-text-2);
+}
+
+.custom-hero-grid .actions {
+  padding-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.video-responsive-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  border-radius: 12px;
+}
+
+.video-responsive-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Add these styles for larger screens */
+@media (min-width: 960px) {
+  .video-responsive-container {
+    /* 1. Adds 40px of space to the left of the video */
+    margin-left: 80px;
+
+    /* 2. Makes the video container 10% larger */
+    transform: scale(1.1);
+  }
+}
+
+/* Update this rule for the "Coming Soon" buttons */
+.custom-button-group {
+  display: inline-flex;
+  /* Change from 'center' to 'flex-start' to align left */
+  justify-content: flex-start;
+  gap: 1rem; /* Adds space between the buttons */
+  margin-top: 1rem;
+}
+
+/* Center the main hero buttons */
+.VPHero.VPHomeHero .actions {
+  justify-content: center;
+}
+
+/* Aligns this section with the rest of the page content */
+.releases-section {
+  max-width: 1152px;
+  margin: -20px auto 40px;
+  padding: 0 24px;
+  text-align: center;
+}
+
+/* Responsive padding for tablet */
+@media (min-width: 640px) {
+  .releases-section {
+    padding: 0 48px;
+  }
+}
+
+/* Responsive padding for desktop */
+@media (min-width: 960px) {
+  .releases-section {
+    padding: 0 64px;
+  }
+}
+
+.releases-section h2 {
+  /* Default h2 is ~24px. This makes it ~30% larger */
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 0; /* Remove default bottom margin from h2 */
+}
+
+/* --- Start: Replace old button/release styles with this block --- */
+
+/* Generic styles for all custom buttons */
+.VPButton.alt, .VPButton.brand {
+  display: inline-block;
+  border: 1px solid;
+  text-align: center;
+  font-weight: 500;
+  border-radius: 20px;
+  padding: 0 20px;
+  line-height: 38px;
+  font-size: 14px;
+  text-decoration: none;
+  transition: color .25s,border-color .25s,background-color .25s;
+}
+
+/* Primary 'brand' button colors */
+.VPButton.brand {
+  border-color: var(--vp-button-brand-border);
+  color: var(--vp-button-brand-text);
+  background-color: var(--vp-button-brand-bg);
+}
+.VPButton.brand:hover {
+  border-color: var(--vp-button-brand-hover-border);
+  color: var(--vp-button-brand-hover-text);
+  background-color: var(--vp-button-brand-hover-bg);
+}
+
+/* Secondary 'alt' button colors */
+.VPButton.alt {
+  border-color: var(--vp-button-alt-border);
+  color: var(--vp-button-alt-text);
+  background-color: var(--vp-button-alt-bg);
+}
+.VPButton.alt:hover {
+  border-color: var(--vp-button-alt-hover-border);
+  color: var(--vp-button-alt-hover-text);
+  background-color: var(--vp-button-alt-hover-bg);
+}
+
+/* Main container for all buttons */
+.all-buttons-section {
+  text-align: center;
+  /* Adjusted top and bottom margins for better spacing */
+  margin: .5rem auto 3rem;
+}
+
+/* Reusable group for buttons */
+.button-group {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Container for the releases section */
+.releases-group {
+  margin-top: 4rem; /* Space between button groups */
+}
+
+.releases-group h2 {
+  font-size: 32px; /* ~30% bigger */
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* --- End: Replacement block --- */

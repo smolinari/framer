@@ -7,11 +7,11 @@ Welcome to the Framer App documentation. Here you'll find information on how to 
 ### Windows
 
 1.  **Download:**
-    *   Download the latest installer (`.msi` or `.exe`) from the Homepage. <!-- Update with link to homepage download section -->
+    *   Download the latest installer (`.msi`) from the Homepage. <!-- Update with link to homepage download section -->
     *   Alternatively, get Framer from the Microsoft Store (link coming soon!).
 2.  **Run Installer:** Double-click the downloaded installer and follow the on-screen prompts.
 
-*(Instructions for macOS and Linux can be added here once packages are available)*
+*(Instructions for macOS and Linux will be added here once packages are available)*
 
 ## Basic Usage
 
@@ -25,7 +25,7 @@ Welcome to the Framer App documentation. Here you'll find information on how to 
     *   **Click-Through Mode (Red Light):** The entire Framer application becomes unresponsive to mouse clicks, allowing you to interact with applications underneath it. The frame remains visible.
 
 3.  **Interacting with the Frame (in Interactive Mode):**
-    *   **Dragging:** Click and drag anywhere on the frame's border to move it.
+    *   **Dragging:** Click and drag anywhere on the frame's border or inside it to move it.
     *   **Resizing:** Click and drag any of the handles (small squares at the corners and sides of the frame) to resize it.
 
 4.  **Using the Controls Area:**
