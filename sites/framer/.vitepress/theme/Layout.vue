@@ -9,7 +9,7 @@ const { Layout } = DefaultTheme
     <template #home-hero-image>
       <div class="video-responsive-container">
         <iframe 
-          src="https://www.youtube.com/embed/IoX2ev59YY4" 
+          src="https://www.youtube.com/embed/ZrrCSAScVF0" 
           frameborder="0" 
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
           allowfullscreen>
@@ -22,8 +22,8 @@ const { Layout } = DefaultTheme
       <div class="all-buttons-section">
         <!-- Main Action Buttons -->
         <div class="button-group">
-          <a class="VPButton brand" href="/#download-windows">Download for Windows</a>
-          <a class="VPButton alt" href="/#download-store">Get from Microsoft Store</a>
+          <a class="VPButton brand" href="/downloads/Framer_0.1.0_x64-setup.exe">Download for Windows</a>
+          <a class="VPButton alt" href="#">Get from Microsoft Store</a>
           <a class="VPButton alt" href="/docs">View Docs</a>
         </div>
 

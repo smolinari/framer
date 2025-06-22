@@ -29,6 +29,15 @@ ARG REPO_URL="https://github.com/smolinari/framer"
 ARG REPO_BRANCH="main"
 RUN git clone --branch ${REPO_BRANCH} ${REPO_URL} .
 
+# Copy the Windows installer from the correct location within the monorepo
+# to the VitePress public directory so it can be served as a static asset.
+RUN mkdir -p sites/framer/public/downloads
+COPY apps/framer/src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis/Framer_0.1.0_x64-setup.exe sites/framer/public/downloads/Framer_0.1.0_x64-setup.exe
+
+# Perform the Rush installation.
+# This sets up node_modules across the monorepo.
+# The cache mount helps prevent EXDEV errors and speeds up builds.
+
 # Perform the Rush installation.
 # This sets up node_modules across the monorepo.
 # The cache mount helps prevent EXDEV errors and speeds up builds.

@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: Framer
+  name: 
   text: "Precisely Delineate Your Screen Capturing."
   tagline: Easily define and manage a visual frame on your desktop and across virtual desktops. Perfect for content creators, streamers, and anyone with high resolution monitors needing to "frame" the area being screen captured.
   # The 'actions' are now handled in Layout.vue

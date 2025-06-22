@@ -5,11 +5,12 @@ Information according to § 5 TMG (German Telemedia Act) and other relevant Euro
 **Responsible for the content:**
 
 Scott Molinari
-Your Street Name and Number
-Your Postal Code and City
-Germany
+Haupstr. 23
+66894 Käshofen, Germany
 
 **Contact:**
-Email: your-email@example.com
+Email: scott.molinari (at) m8a.io
 
-**(Please add any other legally required information here, such as VAT ID if applicable, commercial register details if applicable, dispute resolution information, etc. Consult a legal professional if unsure.)**
+Since our software isn't a pay-for software, further information isn't necessary. 
+
+If you have any questions about Framer, you can contact me at the email address noted above. 
