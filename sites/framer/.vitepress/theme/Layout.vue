@@ -19,19 +19,11 @@ const { Layout } = DefaultTheme
 
     <!-- This single slot now contains ALL buttons -->
     <template #home-hero-after>
-      <div class="all-buttons-section">
-        <!-- Main Action Buttons -->
-        <div class="button-group">
-          <a class="VPButton brand" href="/downloads/Framer_0.1.0_x64-setup.exe">Download for Windows</a>
-          <a class="VPButton alt" href="#">Get from Microsoft Store</a>
-          <a class="VPButton alt" href="/docs">View Docs</a>
-        </div>
-
+      <div class="all-buttons-section"> 
         <!-- Releases Section -->
         <div class="releases-group">
           <h2>Releases Coming Soon!</h2>
           <div class="button-group">
-            <a class="VPButton alt">Linux .deb/.rpm</a>
             <a class="VPButton alt">macOS</a>
           </div>
         </div>

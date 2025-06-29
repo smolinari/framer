@@ -14,6 +14,7 @@ export default defineConfig({
     logo: '/framer-logo.png',
     nav: [
       { text: 'Home', link: '/' },
+      { text: 'Downloads', link: '/downloads' },
       { text: 'Docs', link: '/docs' },
       { text: 'Support Us', link: '/support' }
     ],

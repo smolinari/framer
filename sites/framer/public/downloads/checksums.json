@@ -1,0 +1,18 @@
+{
+  "version": "0.1.0",
+  "build_date": "2025-06-29T16:47:57Z",
+  "downloads": {
+    "windows_x64_msi": {
+      "filename": "Framer_0.1.0_x64_en-US.msi",
+      "sha256": "069a3123eb7236ecbc6d4cd2489e09480653af1f14a888d5bdbcc1d313932722"
+    },
+    "linux_amd64_deb": {
+      "filename": "Framer_0.1.0_amd64.deb",
+      "sha256": "578dddd49a7b5897a24f45644fbd5c9ec8dcd22e7013f84b99c39dc2635c124e"
+    },
+    "linux_amd64_appimage": {
+      "filename": "Framer_0.1.0_amd64.AppImage",
+      "sha256": "e9790ad13edef1fded5ffe4eb9aed83dfc8b2c78b62f5873be5de90266cc7536"
+    }
+  }
+}
