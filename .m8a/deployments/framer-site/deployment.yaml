@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: framer-site
-        image: scottmolinari/my-apps:framer-site-1.0.2
+        image: scottmolinari/my-apps:framer-site-1.0.3
         ports:
         - containerPort: 80
